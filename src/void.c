@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <math.h>
+#include <assert.h>
 
 #define COLOR_RED     "\x1b[31m"
 #define COLOR_GREEN   "\x1b[32m"
@@ -17,8 +20,12 @@
 #define stralloc(str) (char*) malloc(strlen(str) + 1)
 #define intalloc(num) (int*) malloc(sizeof(num))
 #define new(obj) (obj*) malloc(sizeof(obj))
+#define middle(x) (x[0] + (int) len(x)) / 2
 #define for_each(iterator, array) \
     for (size_t iterator = 0; iterator < len(array); iterator++)
+#define __assert(expr, action) do { \
+        if (!(expr)) action;        \
+    } while (0)                     \
 
 typedef enum { true = 1, false = !true } bool;
 
@@ -31,6 +38,29 @@ void clear()
 #else
     printf(COLOR_RED"Can't clear screen."COLOR_RESET);
 #endif
+}
+
+unsigned long fib(unsigned long n) { return n <= 1 ? n : fib(n-1) + fib(n-2); }
+
+unsigned long fact(unsigned long n) { return n <= 0 ? 1 : n * fact(n-1); }
+
+int linear_search(int *a, int x)
+{
+    for (size_t i = 0; i < len(a) - 1; i++)
+        return a[i] == x ? x : -1;
+}
+
+int binary_search(int *a, int x)
+{
+    int start = 0, end = len(a) - 1;
+
+    while (start <= end) {
+        int mid = middle(a);
+        if (x == a[mid]) return mid;
+        else if (x < a[mid]) end = mid - 1;
+        else if (x > a[mid]) start = mid + 1;
+        else return -1;
+    }
 }
 
 // bubble sort = O(n)
@@ -57,3 +87,41 @@ int bsort(int *array)
     sort = NULL;
 }
 
+int32_t gcd(int u, int v)
+{
+    int t;
+    while (u > 0) {
+        if (u < v) { t = u; u = v; v = t; }
+        u = u - v;
+    }
+    return v;
+}
+
+// quick sort O(n log n), worst case: O(n²)
+void quicksort(int list[10], int left, int right)
+{
+    int pivot, temp, i, j, half;
+    i = left;
+    j = right;
+
+    half = (int) ((i + j) / 2);
+    pivot = list[half];
+
+    do {
+        while (list[i] < pivot) i = i + 1;
+        while (list[j] > pivot) j = j - 1;
+
+        if (i <= j) {
+            temp = list[i];
+            list[i] = list[j];
+            list[j] = temp;
+            i = i + 1;
+            j = j - 1;
+        }
+    } while (j > 1);
+
+    if (left < j)
+        quicksort(list, left, j);
+    else if (i < right)
+        quicksort(list, i, right);
+}

@@ -27,4 +27,12 @@ int main()
     int array[] = {1, 2, 3};
     for_each(i, array)
         printf("%d\n", array[i]);
+
+    //
+    int an_array[50];
+    int total = 0;
+    for (size_t i = 0; i < 50; i++) {
+        __assert(!(isnan(an_array[i])), break);
+        total += an_array[i];
+    }
 }

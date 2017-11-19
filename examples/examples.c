@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include "src/void.c"
+#include "../src/void.h"
 
 typedef struct _person {
     char *name;
     unsigned int age;
 } Person;
 
-int main()
+int main(void)
 {
     clear();
 
@@ -35,4 +35,6 @@ int main()
         __assert(!(isnan(an_array[i])), break);
         total += an_array[i];
     }
+
+    return 0;
 }

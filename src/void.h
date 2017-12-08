@@ -42,7 +42,7 @@
     const typeof( ((type *)0)->member ) *__mptr = (ptr);    \
         (type *)( (char *)__mptr - offsetof(type,member) ); })
 #define is_array(a) ((void *)&a == (void *)a)
-#define cat(arg1, arg2) arg1##arg2
+#define cat(arg, ...) arg##__VA_ARGS__
 #define swap(x,y) do \
    { unsigned char swap_temp[sizeof(x) == sizeof(y) ? (signed)sizeof(x) : -1]; \
      memcpy(swap_temp,&y,sizeof(x)); \
@@ -58,13 +58,13 @@
 
 typedef enum { true = 1, false = !true } bool;
 
-typedef int8_t i8;
-typedef uint8_t u8;
-typedef int16_t i16;
+typedef int8_t    i8;
+typedef uint8_t   u8;
+typedef int16_t  i16;
 typedef uint16_t u16;
-typedef int32_t i32;
+typedef int32_t  i32;
 typedef uint32_t u32;
-typedef int64_t i64;
+typedef int64_t  i64;
 typedef uint64_t u64;
 
 i32 sys(const char *str) { system(str); }
@@ -90,46 +90,10 @@ void clear()
 unsigned long fib(unsigned long n)  { return n <= 1 ? n : fib(n-1) + fib(n-2); }
 unsigned long fact(unsigned long n) { return n <= 0 ? 1 : n * fact(n-1); }
 
-int linear_search(int *a, int x)
+int lsearch(int *a, int x)
 {
     for (size_t i = 0; i < len(a) - 1; i++)
         return a[i] == x ? x : -1;
-}
-
-int binary_search(int *a, int x)
-{
-    int start = 0, end = len(a) - 1;
-
-    while (start <= end) {
-        int mid = middle(a);
-        if (x == a[mid]) return mid;
-        else if (x < a[mid]) end = mid - 1;
-        else if (x > a[mid]) start = mid + 1;
-        else return -1;
-    }
-}
-
-int bsort(int *array)
-{
-    int temp;
-    bool sorted;
-    int *sort = (int*)malloc(len(array) * sizeof(int));
-    while (true) {
-        sorted = false;
-        for (size_t i = 0; i < len(array) - 1; i++) {
-            if (sort[i] > sort[i + 1]) {
-                temp = sort[i];
-                sort[i] = sort[i + 1];
-                sort[i + 1] = temp;
-                sorted = true;
-            }
-        }
-        if (sorted == false)
-            break;
-    }
-    for (size_t i = 0; i < len(array); printf("%d ", sort[i++]));
-    free(sort);
-    sort = NULL;
 }
 
 i32 gcd(int u, int v)
@@ -152,7 +116,7 @@ float quicksort(float number)
     y  = number;
     y  = * (long *) &y;
     i  = 0x5f3759df - (i >> 1);
-    y  = * (float*) &i;
+    y  = * (float *) &i;
     y  = y * (threehalfs - (x2 * y * y));
     return y;
 }

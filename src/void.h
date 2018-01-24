@@ -87,23 +87,10 @@ void clear()
     #endif
 }
 
-unsigned long fib(unsigned long n)  { return n <= 1 ? n : fib(n-1) + fib(n-2); }
-unsigned long fact(unsigned long n) { return n <= 0 ? 1 : n * fact(n-1); }
-
 int lsearch(int *a, int x)
 {
     for (size_t i = 0; i < len(a) - 1; i++)
         return a[i] == x ? x : -1;
-}
-
-i32 gcd(int u, int v)
-{
-    int t;
-    while (u > 0) {
-        if (u < v) { t = u; u = v; v = t; }
-        u = u - v;
-    }
-    return v;
 }
 
 float quicksort(float number)

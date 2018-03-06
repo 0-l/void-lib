@@ -101,3 +101,10 @@ float quicksort(float number)
     y  = y * (threehalfs - (x2 * y * y));
     return y;
 }
+
+size_t strlen(const char *str)
+{
+    size_t len = 0;
+    while (str[len++]);
+    return len;
+}
